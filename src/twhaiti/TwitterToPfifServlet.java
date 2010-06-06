@@ -1,6 +1,7 @@
 /*
  * This is a webservice to convert the latest data on Twitter to PFIF.
  * @author     Chirag Shah <chiragshah1@gmail.com>
+ * @author     Eric Torreborre <etorreborre@yahoo.com>
  * @license    Public Domain
  */
 package twhaiti;
@@ -23,7 +24,10 @@ import com.google.appengine.api.urlfetch.*;
  * * creating a response with the PFIF record that could be created by from the Twitter message
  * 
  * * Please go to http://wiki.rhok.org/Person_Finder_Sydney_team to read for a list of 
- *   improvements that can be done on this service
+ *   improvements that can be done on this service:
+ *   
+ *   * don't create a record if there's already one (what happens in that case)
+ *   * notify the reporter of the missing person that a record was created, and tell him/her to go to PersonFinder
  * 
  */
 @SuppressWarnings("serial")

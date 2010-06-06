@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * * be able to pass the hashtag
  * * be able to pass the required words
+ * * be able to pass the rejected words. In the case of the haiti crisis, removing tweakthetweet allows to filter those
+ *   messages that describe other needs (see here: http://epic.cs.colorado.edu/groups/tweakthetweet/)
  * 
  * Something to explore:
  * * how to use the EPIC project (http://epic.cs.colorado.edu/tweak-the-tweet/helping_haiti_tweak_the_twe.html)
