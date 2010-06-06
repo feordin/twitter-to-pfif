@@ -8,31 +8,11 @@ import org.json.JSONObject;
  * A collection of utility methods for PFIF
  */
 public class PFIF {
-    private static final String FIRST_NAME = "first_name";
-    private static final String LAST_NAME = "last_name";
 
-    private static final String PHOTO_URL = "photo_url";
-
-    private static final String HOME_CITY = "home_city";
-    private static final String HOME_STATE = "home_state";
-    private static final String HOME_NEIGHBORHOOD = "home_neighborhood";
-    private static final String HOME_STREET = "home_neighborhood";
-
-    private static final String OTHER = "other";
-    private static final String ENTRY_DATE = "entry_date";
-    
-    private static final String AUTHOR_NAME = "author_name";
-    private static final String AUTHOR_PHONE = "author_phone";
-    private static final String AUTHOR_EMAIL = "author_email";
-    
-    private static final String SOURCE_NAME = "source_name"; 
-    private static final String SOURCE_DATE = "source_date";
-    private static final String PERSON_RECORD_ID = "person_record_id";
-    
-    /*
+    /**
      *  Convert Twitter to PFIF
      */
-    public static String twitterToPFIF(JSONArray twitterArray) {
+    public String twitterToPFIF(JSONArray twitterArray) {
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\"?>");
         sb.append("<pfif:pfif xmlns:pfif=\"http://zesty.ca/pfif/1.1\">");
@@ -56,7 +36,7 @@ public class PFIF {
      * PFIF Spec: http://zesty.ca/pfif/1.1/
      * Twitter API: http://apiwiki.twitter.com/Twitter-API-Documentation
      */
-    private static String convertObjectToPerson(JSONObject twitterObj) throws Exception {        
+    private String convertObjectToPerson(JSONObject twitterObj) throws Exception {        
         StringBuilder sb = new StringBuilder()
           .append("<pfif:person>")
           .append("<pfif:first_name>Twitter</pfif:first_name>")
