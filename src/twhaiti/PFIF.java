@@ -6,6 +6,12 @@ import org.json.JSONObject;
 /**
  * @author chirags
  * A collection of utility methods for PFIF
+ * 
+ * Possible enhancements would be to create java classes based
+ * upon the pfif XSD, JAXB could be used for this and then easily
+ * modified
+ * 
+ * 
  */
 public class PFIF {
 
@@ -14,6 +20,7 @@ public class PFIF {
      */
     public String twitterToPFIF(JSONArray twitterArray) {
         StringBuilder sb = new StringBuilder();
+        String searchedPerson = "";
         sb.append("<?xml version=\"1.0\"?>");
         sb.append("<pfif:pfif xmlns:pfif=\"http://zesty.ca/pfif/1.1\">");
         
@@ -22,6 +29,17 @@ public class PFIF {
             try {
                 twitterObj = twitterArray.getJSONObject(i);
                 sb.append(convertObjectToPerson(twitterObj));
+                
+                //Here we are also replying to the original tweet with some info
+                // on person finder, this should be refactored to a new location
+                // and to allow for different person finder URLs
+                
+                PersonFinderSearch pfs = new PersonFinderSearch();
+                searchedPerson = getName(twitterObj.getString("text"));
+                int count = pfs.getCount(searchedPerson, "http://haiticrisis.appspot.com/results?role=seek&query=%s");
+                TwitterReply tr = new TwitterReply();
+                tr.replyToTweet(twitterObj, "feordin", "tempPassword", count, searchedPerson);
+                
             } catch (Exception e) {
                 System.err.println("Unable to convert a twitter object to a person object");
                 // Continue..
@@ -32,8 +50,23 @@ public class PFIF {
         return sb.toString();
     }
     
-    /*
-     * PFIF Spec: http://zesty.ca/pfif/1.1/
+    private String getName(String text) {
+		int i = 0;
+		StringBuilder name = new StringBuilder();
+    	String[] tokens = text.split(" ");
+    	for (i=0; i<tokens.length;i++){
+    		if (tokens[i].equalsIgnoreCase("imok") || tokens[i].equalsIgnoreCase("#pf") || tokens[i].equalsIgnoreCase("for") || tokens[i].equalsIgnoreCase("Looking")){
+    			// do nothing
+    		}
+    		else{
+    			name.append(" " + tokens[i]);
+    		}
+    	}
+		return name.toString();
+	}
+
+	/*
+     * PFIF Spec: http://zesty.ca/pfif/1.2/
      * Twitter API: http://apiwiki.twitter.com/Twitter-API-Documentation
      */
     private String convertObjectToPerson(JSONObject twitterObj) throws Exception {        

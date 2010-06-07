@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  * The default query was built from the http://search.twitter.com/advanced page by entering
  * "Any of these words"  = "need imok damage injured" 
  * "None of these words" = "RT via epiccolorado tweakthetweet roubboy posting twitagsearch openstreetmap"
- * "This hashtag"        = "haiti"
+ * "This hashtag"        = "pf"
  * 
  * A reasonable enhancement would be to:
  * 
@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  * * be able to pass the required words
  * * be able to pass the rejected words. In the case of the haiti crisis, removing tweakthetweet allows to filter those
  *   messages that describe other needs (see here: http://epic.cs.colorado.edu/groups/tweakthetweet/)
+ * * include other twitter search paramerters: from person, to person, near location, etc.
  * 
  * Something to explore:
  * * how to use the EPIC project (http://epic.cs.colorado.edu/tweak-the-tweet/helping_haiti_tweak_the_twe.html)
@@ -37,12 +38,20 @@ import javax.servlet.http.HttpServletRequest;
 public class TwitterQueryBuilder {
 
 	private static final String TWITTER_SEARCH = "http://search.twitter.com/search.json?q=";
-	private static final String DEFAULT_SEARCH_QUERY = 
-		"&ands=&phrase=&ors=%23need+%23imok+%23damage+%23injured&nots=RT+via+epiccolorado+text+tweakthetweet+roubboy+posting+twitagsearch+openstreetmap&tag=haiti"+
-		"&lang=all&from=&to=&ref=&near=&since=&until=&rpp=100";
+	private static final String DEFAULT_SEARCH_QUERY = "+imok+OR+injured+OR+looking+%23pf";
 
-	public String createQuery(HttpServletRequest req) {
+	public String createQueryTag(HttpServletRequest req, String tag)	{
 		String query = DEFAULT_SEARCH_QUERY;
+		query = query.replace("#pf", tag);
+		return runQuery(req, query);
+	}
+	
+	public String createQuery(HttpServletRequest req)	{
+		String query = DEFAULT_SEARCH_QUERY;
+		return runQuery(req, query);
+	}
+	
+	public String runQuery(HttpServletRequest req, String query) {
 		String since_id = "7816973595";
 		for (String since : getParameter(req, "since_id")) {
 			since_id = since;
